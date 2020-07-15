@@ -1,0 +1,98 @@
+#usda 1.0
+(
+    metersPerUnit = 1
+    upAxis = "Y"
+)
+
+def Scope "materials"
+{
+    def Material "testmat"
+    {
+        token outputs:karma:displacement.connect = </materials/testmat/testmat_displace.outputs:displacement>
+        token outputs:karma:surface.connect = </materials/testmat/testmat_surface.outputs:surface>
+        token outputs:surface.connect = </materials/testmat/testmat_preview.outputs:surface>
+
+        def Shader "testmat_surface"
+        {
+            uniform token info:implementationSource = "sourceAsset"
+            uniform asset info:sourceAsset = @opdef:/Vop/principledshader::2.0?SurfaceVexCode@
+            vector3f inputs:basecolor = (1, 1, 1)
+            asset inputs:basecolor_texture = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_BaseColor.png@
+            int inputs:basecolor_useTexture = 1
+            float inputs:metallic = 1
+            asset inputs:metallic_texture = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_Metallic.png@
+            int inputs:metallic_useTexture = 1
+            float inputs:rough = 1
+            asset inputs:rough_texture = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_Roughness.png@
+            int inputs:rough_useTexture = 1
+            float inputs:transparency = 0.1
+            token outputs:surface
+        }
+
+        def Shader "testmat_displace"
+        {
+            uniform token info:implementationSource = "sourceAsset"
+            uniform asset info:sourceAsset = @opdef:/Vop/principledshader::2.0?DisplacementVexCode@
+            token outputs:displacement
+        }
+
+        def Shader "testmat_preview"
+        {
+            uniform token info:id = "UsdPreviewSurface"
+            float inputs:clearcoatRoughness = 0
+            color3f inputs:diffuseColor = (1, 1, 1)
+            color3f inputs:diffuseColor.connect = </materials/testmat/testmat_preview_texture_diffuseColor.outputs:rgb>
+            float inputs:metallic = 1
+            float inputs:metallic.connect = </materials/testmat/testmat_preview_texture_metallic.outputs:r>
+            float inputs:opacity = 0.9
+            float inputs:opacity.connect = </materials/testmat/testmat_preview_texture_diffuseColor.outputs:a>
+            float inputs:roughness = 1
+            float inputs:roughness.connect = </materials/testmat/testmat_preview_texture_roughness.outputs:r>
+            color3f inputs:specularColor = (1, 1, 1)
+            token outputs:surface
+        }
+
+        def Shader "testmat_preview_uv"
+        {
+            uniform token info:id = "UsdPrimvarReader_float2"
+            float2 inputs:fallback = (0, 0)
+            token inputs:varname = "st"
+            float2 outputs:result
+        }
+
+        def Shader "testmat_preview_texture_diffuseColor"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_BaseColor.png@
+            float4 inputs:scale = (1, 1, 1, 1)
+            float2 inputs:st.connect = </materials/testmat/testmat_preview_uv.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float outputs:a
+            color3f outputs:rgb
+        }
+
+        def Shader "testmat_preview_texture_metallic"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_Metallic.png@
+            float4 inputs:scale = (1, 1, 1, 1)
+            float2 inputs:st.connect = </materials/testmat/testmat_preview_uv.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float outputs:r
+        }
+
+        def Shader "testmat_preview_texture_roughness"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @../repacked_BarrelWithLid/repacked_BarrelWithLid_UV_<UDIM>_Roughness.png@
+            float4 inputs:scale = (1, 1, 1, 1)
+            float2 inputs:st.connect = </materials/testmat/testmat_preview_uv.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float outputs:r
+        }
+    }
+}
+

@@ -1,0 +1,64 @@
+#usda 1.0
+(
+    endTimeCode = 1
+    framesPerSecond = 24
+    metersPerUnit = 1
+    startTimeCode = 1
+    timeCodesPerSecond = 24
+    upAxis = "Y"
+)
+
+def Xform "meshes" (
+    kind = "group"
+)
+{
+    def "testgeo" (
+        append payload = @./BaseGeo/barrelmodel.usda@
+        variants = {
+            string BarrelSet = "OUT_BODY1"
+        }
+        append variantSets = "BarrelSet"
+    )
+    {
+        rel material:binding = </materials/testmat/testmat>
+
+        over "BarrelBody" (
+            kind = "subcomponent"
+        )
+        {
+        }
+
+        over "BarrelLids" (
+            kind = "subcomponent"
+        )
+        {
+        }
+
+        over "BarrelMetalStraps" (
+            kind = "subcomponent"
+        )
+        {
+        }
+        variantSet "BarrelSet" = {
+            "OUT_ALL1" {
+
+            }
+            "OUT_BODY1" {
+
+            }
+            "OUT_LIDS1" {
+
+            }
+        }
+    }
+}
+
+def Xform "materials"
+{
+    def "testmat" (
+        prepend references = @./materials/barrelmat.usda@</materials>
+    )
+    {
+    }
+}
+
