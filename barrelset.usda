@@ -44,9 +44,27 @@ def Xform "meshes" (
 
             }
             "OUT_BODY1" {
+                over "BarrelLids"
+                {
+                    token visibility = "invisible"
+                }
+
+                over "BarrelMetalStraps"
+                {
+                    token visibility = "invisible"
+                }
 
             }
             "OUT_LIDS1" {
+                over "BarrelBody"
+                {
+                    token visibility = "invisible"
+                }
+
+                over "BarrelMetalStraps"
+                {
+                    token visibility = "invisible"
+                }
 
             }
         }
