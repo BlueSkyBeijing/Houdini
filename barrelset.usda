@@ -8,19 +8,19 @@
     upAxis = "Y"
 )
 
-def Xform "meshes" (
+def Xform "barrel" (
     kind = "group"
 )
 {
-    def "testgeo" (
+    def "barrelgeo" (
         append payload = @./BaseGeo/barrelmodel.usda@
         variants = {
-            string BarrelSet = "OUT_BODY1"
+            string BarrelSet = "OUT_ALL1"
         }
         append variantSets = "BarrelSet"
     )
     {
-        rel material:binding = </materials/testmat/testmat>
+        rel material:binding = </materials/barrelmat/barrel>
 
         over "BarrelBody" (
             kind = "subcomponent"
@@ -73,7 +73,7 @@ def Xform "meshes" (
 
 def Xform "materials"
 {
-    def "testmat" (
+    def "barrelmat" (
         prepend references = @./materials/barrelmat.usda@</materials>
     )
     {
